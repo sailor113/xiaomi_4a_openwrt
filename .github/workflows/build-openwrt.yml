@@ -61,12 +61,6 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: Patch code
-      run: |
-        cd openwrt
-        git clone https://github.com/Ser9ei/xiaomi-r4agv2-openwrt_patch
-        patch -p1 -N < xiaomi-r4agv2-openwrt_patch/4a-gigabit-v2_openwrt.patch
-
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
@@ -87,6 +81,12 @@ jobs:
         chmod +x $DIY_P2_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
+
+    - name: Patch code
+      run: |
+        cd openwrt
+        git clone https://github.com/Ser9ei/xiaomi-r4agv2-openwrt_patch
+        patch -p1 -N < xiaomi-r4agv2-openwrt_patch/4a-gigabit-v2_openwrt.patch
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
